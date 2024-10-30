@@ -1,7 +1,11 @@
 const express =require("express");
 const cors = require("cors");
-const {controllerDebug} = require("../controller/controllerDebug")
-const {controllerAddStaff} = require("../controller/controllerAddStaff")
+const {controllerDebug} = require("../controller/controllerDebug");
+const {controllerAddStaff} = require("../controller/controllerAddStaff");
+const {controllerHistroyUpdate} = require("../controller/controllerHistroyUpdate");
+const {controllerVisionUpdate} = require("../controller/controllerVisionUpdate");
+const {controllerServiceUpdate} = require("../controller/controllerServiceUpdate");
+const {controllerRemoveStaff} = require("../controller/controllerRemoveStaff");
 const multer = require('multer');
 
 const app = express();
@@ -15,7 +19,12 @@ app.use(cors(
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
-app.get("/api/debug", controllerDebug)
-app.post("/api/about/add/staff",  upload.single("image") ,controllerAddStaff)
+app.get("/api/debug", controllerDebug);
+app.post("/api/add/about/staff",  upload.single("image") ,controllerAddStaff);
+app.delete("/api/delete/about/staff", controllerRemoveStaff);
+app.post("/api/update/about/histroy", controllerHistroyUpdate);
+app.post("/api/update/about/vision", controllerVisionUpdate);
+app.post("/api/update/about/service", controllerServiceUpdate);
+
 
 export {app}

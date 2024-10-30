@@ -5,28 +5,26 @@ const { Storage } = require('@google-cloud/storage');
 const path = require("path");
 require('dotenv').config({ path: path.resolve(__dirname, "../.env") });
 
-
 const storage = new Storage(
     {
-        projectId: process.env.PROJECT_ID,
+        projectId: "sfsdf",
         keyFilename: path.join(__dirname, "../../key.json"),
     }
 )
 
-const kind = process.env.KIND
+const kind = "about_page_staff"
 const datastore = new Datastore();
-const bucket = storage.bucket(process.env.BUCKET);
+const bucket = storage.bucket("ddd");
 const urlCloudStorage = process.env.URL_CLOUD_STORAGE
+// const requiredEnvVars = ['PROJECT_ID', 'BUCKET', 'KIND', 'URL_CLOUD_STORAGE'];
 
-const requiredEnvVars = ['PROJECT_ID', 'BUCKET', 'KIND', 'URL_CLOUD_STORAGE'];
-requiredEnvVars.forEach((varName) => {
-    if (!process.env[varName]) {
-        throw new Error(`Environment variable ${varName} is not set.`);
-    }
-});
+// requiredEnvVars.forEach((varName) => {
+//     if (!process.env[varName]) {
+//         throw new Error(`Environment variable ${varName} is not set.`);
+//     }
+// });
 
 const controllerAddStaff = async (req: typeof Req, res: typeof Res) => {
-
     const date = new Date();
     const padZero = (num: number): string => num.toString().padStart(2, '0');
 
@@ -36,7 +34,7 @@ const controllerAddStaff = async (req: typeof Req, res: typeof Res) => {
     const hours = padZero(date.getHours());
     const minutes = padZero(date.getMinutes());
     const seconds = padZero(date.getSeconds());
-    
+
     try{
         const {
             position,
@@ -80,6 +78,5 @@ const controllerAddStaff = async (req: typeof Req, res: typeof Res) => {
         res.status(500).send(err)
     }
 }
-
 
 export {controllerAddStaff}
