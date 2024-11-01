@@ -7,14 +7,14 @@ require('dotenv').config({ path: path.resolve(__dirname, "../.env") });
 
 const storage = new Storage(
     {
-        projectId: "sfsdf",
+        projectId: "confident-topic-404213",
         keyFilename: path.join(__dirname, "../../key.json"),
     }
 )
 
 const kind = "about_page_staff"
 const datastore = new Datastore();
-const bucket = storage.bucket("ddd");
+const bucket = storage.bucket("padtravel");
 const urlCloudStorage = process.env.URL_CLOUD_STORAGE
 // const requiredEnvVars = ['PROJECT_ID', 'BUCKET', 'KIND', 'URL_CLOUD_STORAGE'];
 
