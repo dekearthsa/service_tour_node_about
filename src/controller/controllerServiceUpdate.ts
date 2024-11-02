@@ -5,15 +5,22 @@ const path = require("path");
 const serviceType = require("../interface/serviceType");
 require('dotenv').config({ path: path.resolve(__dirname, "../../.env") });
 
-const kind = process.env.KIND_SERVICE
+const kind = "about_page_service"
 const datastore = new Datastore();
 
 
 const controllerServiceUpdate = async (req: typeof Req, res: typeof Res) => {
     const {services} = req.body
-    const taskKey = datastore.key([kind]);
+    
     try{
+        
         services.map( async (el: typeof serviceType) => {
+            const query = datastore.createQuery(kind).filter('title', '=', el.title);
+            const [entities] = await datastore.runQuery(query);
+            const idSet = entities[0][datastore.KEY]['id']
+            const id = parseInt(idSet)
+            const taskKey = datastore.key([kind,id])
+
             const task = {
                 key: taskKey,
                 data: {
@@ -21,7 +28,7 @@ const controllerServiceUpdate = async (req: typeof Req, res: typeof Res) => {
                     iconUrl: el.iconUrl,
                 }
             }
-            await datastore.save(task);
+            await datastore.update(task);
         })
         res.status(200).send("update!")
     }catch(err){

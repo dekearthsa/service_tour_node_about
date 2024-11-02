@@ -5,6 +5,9 @@ const {controllerAddStaff} = require("../controller/controllerAddStaff");
 const {controllerHistroyUpdate} = require("../controller/controllerHistroyUpdate");
 const {controllerServiceUpdate} = require("../controller/controllerServiceUpdate");
 const {controllerRemoveStaff} = require("../controller/controllerRemoveStaff");
+const {controllerGetAbout} = require("../controller/controllerGetAbout");
+const {controllerGetStaff} = require("../controller/controllerGetStaff");
+const {controllerGetServices} = require("../controller/controllerGetServices");
 const multer = require('multer');
 
 const app = express();
@@ -19,6 +22,10 @@ const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
 app.get("/api/debug", controllerDebug);
+app.get("/api/get/about", controllerGetAbout);
+app.get("/api/get/staff", controllerGetStaff);
+app.get("/api/get/services", controllerGetServices);
+
 app.post("/api/add/about/staff",  upload.single("image") ,controllerAddStaff);
 app.delete("/api/delete/about/staff", controllerRemoveStaff);
 app.post("/api/update/about/content", controllerHistroyUpdate);

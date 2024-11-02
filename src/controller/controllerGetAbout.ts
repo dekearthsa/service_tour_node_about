@@ -5,7 +5,7 @@ const { Datastore } = require("@google-cloud/datastore");
 const path = require("path");
 require('dotenv').config({ path: path.resolve(__dirname, "../../.env") });
 
-const KIND = process.env.KIND_CONTENT
+const KIND = "about_page_content"
 const datastore = new Datastore();
 
 const controllerGetAbout = async (req: typeof Req, res: typeof Res) => {

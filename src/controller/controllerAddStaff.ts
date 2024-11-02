@@ -7,20 +7,17 @@ require('dotenv').config({ path: path.resolve(__dirname, "../../.env") });
 
 const storage = new Storage(
     {
-        projectId: process.env.PROJECT_ID,
-        keyFilename: path.join(__dirname, "../../key.json"),
+        projectId: "confident-topic-404213",
+        // keyFilename: path.join(__dirname, "../../key.json")
     }
 )
 
-const kind = process.env.KIND_STAFF
+const kind = "about_page_staff"
 const datastore = new Datastore();
-const bucket = storage.bucket(process.env.KIND_STAFF);
-const urlCloudStorage = process.env.URL_CLOUD_STORAGE
+const bucket = storage.bucket("padtravel");
+const urlCloudStorage = "https://storage.googleapis.com/padtravel"
 
 const controllerAddStaff = async (req: typeof Req, res: typeof Res) => {
-    // console.log(path.join(__dirname, "../../key.json"))
-    // console.log(path.resolve(__dirname, "../../.env"))
-    // console.log(process.env.PROJECT_ID)
     const date = new Date();
     const padZero = (num: number): string => num.toString().padStart(2, '0');
 
@@ -41,10 +38,16 @@ const controllerAddStaff = async (req: typeof Req, res: typeof Res) => {
 
         const imgFile = req.file;
 
+        console.log(position)
+        console.log(rank)
+        console.log(name)
+        console.log(contact)
+        console.log(imgFile)
+
         if (!imgFile) {
             return res.status(400).json({ message: 'Image file is required.' });
         }   
-
+        
         const createImgName = `${name}_${day}_${month}_${year}_${hours}_${minutes}_${seconds}.png`
 
         // Upload image to Google Cloud Storage
@@ -56,6 +59,8 @@ const controllerAddStaff = async (req: typeof Req, res: typeof Res) => {
             public: true, 
         });
 
+        console.log("create save bucket pass!")
+
         const taskKey = datastore.key([kind]);
         const task = {
             key: taskKey,
@@ -64,10 +69,11 @@ const controllerAddStaff = async (req: typeof Req, res: typeof Res) => {
                 rank: rank,
                 position: position,
                 contact: contact,
-                imageUrl: `${urlCloudStorage}/${createImgName}`
+                imgUrl: `${urlCloudStorage}/${createImgName}`
             }
         }
         await datastore.save(task);
+        console.log("create save task pass!")
         res.send("ok")
     }catch(err){
         console.log(err)
