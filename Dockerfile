@@ -1,21 +1,27 @@
-FROM node:23-alpine3.19
+# Use the official Node.js 22 Alpine image as the base
+FROM node:22-alpine
 
-# Set the working directory
-# RUN mkdir /usr/src/app
+# Set the working directory inside the container
 WORKDIR /usr/src/app
-RUN ls
 
-# Copy package files and install dependencies
-COPY package.json package-lock.json /usr/src/app/
+# Copy package.json and package-lock.json to leverage Docker cache
+COPY package.json .
+COPY package-lock.json .
+
+# Install project dependencies
 RUN npm install && npm cache clean --force
 
 # Copy the rest of the application code
-COPY . /usr/src/app/
-RUN ls
+COPY . .
 
-# Expose the port your application listens on
-EXPOSE 8882
+# Run the build script defined in package.json
+RUN npm run build
 
-RUN ls
+# Expose the desired port
+EXPOSE 8189
+
+# (Optional) List files for debugging purposes
+RUN ls -a
+
 # Define the command to run your application
 CMD ["node", "./dist/index.js"]

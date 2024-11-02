@@ -17,7 +17,6 @@ app.use(cors(
     {origin: '*'}
 ));
 
-
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
@@ -27,9 +26,9 @@ app.get("/api/get/staff", controllerGetStaff);
 app.get("/api/get/services", controllerGetServices);
 
 app.post("/api/add/about/staff",  upload.single("image") ,controllerAddStaff);
-app.delete("/api/delete/about/staff", controllerRemoveStaff);
 app.post("/api/update/about/content", controllerHistroyUpdate);
 app.post("/api/update/about/service", controllerServiceUpdate);
 
+app.delete("/api/delete/about/staff", controllerRemoveStaff);
 
 export {app}
