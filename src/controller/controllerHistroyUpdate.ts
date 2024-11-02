@@ -2,24 +2,42 @@ const { request: Req } = require('express')
 const { response: Res } = require('express')
 const { Datastore } = require("@google-cloud/datastore");
 const path = require("path");
-require('dotenv').config({ path: path.resolve(__dirname, "../.env") });
+require('dotenv').config({ path: path.resolve(__dirname, "../../.env") });
 
-const kind = "about_page_histroy"
+const kind = process.env.KIND_CONTENT
 const datastore = new Datastore();
+const STATIC_HIST = "history"
+// const STATIC_VIS = "vision"
 
 const controllerHistroyUpdate = async (req: typeof Req, res: typeof Res) => {
-    const {content} = req.body
+    const {content, imgUrl, contentType} = req.body
     try{
-        const taskKey = datastore.key([kind]);
-        const task = {
-            key: taskKey,
-            data: {
-                content: content,
-                imgUrl: "",
+        if(contentType === STATIC_HIST){
+            const taskKey = datastore.key([kind]);
+            const task = {
+                key: taskKey,
+                data: {
+                    contentType: contentType,
+                    content: content,
+                    imgUrl: imgUrl,
+                }
             }
+            await datastore.save(task);
+            res.status(200).send("update!")
+        }else{
+            const taskKey = datastore.key([kind]);
+            const task = {
+                key: taskKey,
+                data: {
+                    contentType: contentType,
+                    content: content,
+                    imgUrl: imgUrl,
+                }
+            }
+            await datastore.save(task);
+            res.status(200).send("update!")
         }
-        await datastore.save(task);
-        res.status(200).send("update!")
+        
     }catch(err){
         res.status(500).send(err)
     }

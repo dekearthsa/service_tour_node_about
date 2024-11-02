@@ -3,28 +3,24 @@ const { response: Res } = require('express')
 const { Datastore } = require("@google-cloud/datastore");
 const { Storage } = require('@google-cloud/storage');
 const path = require("path");
-require('dotenv').config({ path: path.resolve(__dirname, "../.env") });
+require('dotenv').config({ path: path.resolve(__dirname, "../../.env") });
 
 const storage = new Storage(
     {
-        projectId: "confident-topic-404213",
+        projectId: process.env.PROJECT_ID,
         keyFilename: path.join(__dirname, "../../key.json"),
     }
 )
 
-const kind = "about_page_staff"
+const kind = process.env.KIND_STAFF
 const datastore = new Datastore();
-const bucket = storage.bucket("padtravel");
+const bucket = storage.bucket(process.env.KIND_STAFF);
 const urlCloudStorage = process.env.URL_CLOUD_STORAGE
-// const requiredEnvVars = ['PROJECT_ID', 'BUCKET', 'KIND', 'URL_CLOUD_STORAGE'];
-
-// requiredEnvVars.forEach((varName) => {
-//     if (!process.env[varName]) {
-//         throw new Error(`Environment variable ${varName} is not set.`);
-//     }
-// });
 
 const controllerAddStaff = async (req: typeof Req, res: typeof Res) => {
+    // console.log(path.join(__dirname, "../../key.json"))
+    // console.log(path.resolve(__dirname, "../../.env"))
+    // console.log(process.env.PROJECT_ID)
     const date = new Date();
     const padZero = (num: number): string => num.toString().padStart(2, '0');
 
@@ -64,7 +60,7 @@ const controllerAddStaff = async (req: typeof Req, res: typeof Res) => {
         const task = {
             key: taskKey,
             data: {
-                name: name,
+                staff_name: name,
                 rank: rank,
                 position: position,
                 contact: contact,

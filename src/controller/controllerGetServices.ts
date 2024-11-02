@@ -5,18 +5,18 @@ const { Datastore } = require("@google-cloud/datastore");
 const path = require("path");
 require('dotenv').config({ path: path.resolve(__dirname, "../../.env") });
 
-const KIND = process.env.KIND_CONTENT
+const KIND = process.env.KIND_SERVICE
 const datastore = new Datastore();
 
-const controllerGetAbout = async (req: typeof Req, res: typeof Res) => {
+const controllerGetServices = async (req: typeof Req, res: typeof Res) => {
     try{
         const query = datastore.createQuery(KIND)
         const [tasks] = await datastore.runQuery(query);
         res.status(200).send(tasks)
     }catch(err){
-        console.log(`error in controllerGetAbout: ${err}`)
+        console.log(`error in controllerGetServices: ${err}`)
         res.status(500).send(err)
     }
 }
 
-export {controllerGetAbout}
+export {controllerGetServices}
