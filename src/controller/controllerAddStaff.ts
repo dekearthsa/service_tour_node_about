@@ -38,11 +38,11 @@ const controllerAddStaff = async (req: typeof Req, res: typeof Res) => {
 
         const imgFile = req.file;
 
-        console.log(position)
-        console.log(rank)
-        console.log(name)
-        console.log(contact)
-        console.log(imgFile)
+        // console.log(position)
+        // console.log(rank)
+        // console.log(name)
+        // console.log(contact)
+        // console.log(imgFile)
 
         if (!imgFile) {
             return res.status(400).json({ message: 'Image file is required.' });
@@ -59,21 +59,21 @@ const controllerAddStaff = async (req: typeof Req, res: typeof Res) => {
             public: true, 
         });
 
-        console.log("create save bucket pass!")
+        // console.log("create save bucket pass!")
 
         const taskKey = datastore.key([kind]);
         const task = {
             key: taskKey,
             data: {
                 staff_name: name,
-                rank: rank,
+                rank: Number(rank),
                 position: position,
                 contact: contact,
                 imgUrl: `${urlCloudStorage}/${createImgName}`
             }
         }
         await datastore.save(task);
-        console.log("create save task pass!")
+        // console.log("create save task pass!")
         res.send("ok")
     }catch(err){
         console.log(err)

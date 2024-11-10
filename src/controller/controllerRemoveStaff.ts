@@ -9,10 +9,13 @@ const datastore = new Datastore();
 
 const controllerRemoveStaff = async (req: typeof Req, res: typeof Res) => {
     const {name} = req.body;
+    // console.log("name => ",name)
     try{
         const query = datastore.createQuery(kind).filter('staff_name', '=', name);
         const [entities] = await datastore.runQuery(query);
+        // console.log("entities => ", entities)
         const idSet = entities[0][datastore.KEY]['id']
+        // console.log("idSet => ",idSet)
         const id = parseInt(idSet)
         const taskKey = datastore.key([kind,id])
         await datastore.delete(taskKey);

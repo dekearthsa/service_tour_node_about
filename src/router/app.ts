@@ -28,7 +28,6 @@ app.get("/api/get/services", controllerGetServices);
 app.post("/api/add/about/staff",  upload.single("image") ,controllerAddStaff);
 app.post("/api/update/about/content", controllerHistroyUpdate);
 app.post("/api/update/about/service", controllerServiceUpdate);
-
-app.delete("/api/delete/about/staff", controllerRemoveStaff);
+app.post("/api/delete/about/staff", controllerRemoveStaff);
 
 export {app}
